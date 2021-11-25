@@ -23,8 +23,14 @@ model_fit <- function (mf)  {
   H = X%*%A_inv%*%(t(X))
   y_hat = H%*%Y
   result = list()
-  result$y_hat = y_hat
-  result$beta_hat = beta_hat
-  result$residuals = Y-y_hat
+  result$fitted.values= as.numeric(unlist(y_hat))
+  result$coefficients = as.numeric(unlist(beta_hat))
+  result$residuals = as.numeric(unlist(Y-y_hat))
+  result$qr = qr(X)
+  effects = qr.qty(result$qr, y)
+  result$effects = as.numeric(unlist(effects))
+  result$rank = result$qr$rank
+  result$df.residual = dim(completedata)[1]-result$rank
+  result$model = as.data.frame(completedata)
   return (result)
 }
