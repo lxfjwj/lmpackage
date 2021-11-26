@@ -34,7 +34,10 @@ linear_regression <- function (formula, data, subset, weights, na.action, method
   mf[[1L]] <- quote(stats::model.frame)
   mf <- eval(expr = mf, envir = parent.frame())
   # get fulldata matrix: mf
-  result = model_fit(mf)
+  term = attr(mf,"terms")
+  intercept = attr(term,"intercept")
+  result = model_fit(mf, intercept)
   result$formula = formula
   return (result)
 }
+

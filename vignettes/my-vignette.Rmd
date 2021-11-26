@@ -7,14 +7,57 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# 1. Introduction
+This package "lmpackage" is for simulating the output of lm() function. In the output.
+
+# 2. Comparison with lm() function
+## 2.1 correctness
+To compare the correctness of our package with the lm() package. We randomly created a simulated data set consisting of 500*4 data. The last 3 columns are predictors (x, y, z), generated randomly. The first column is outcome O, to guarantee a linear relationship, here we generated y by linear combination of x, y, and z, and added a random error at the end. 
+```{r}
+#library(lmpackage)
+x = runif(500,1,5)
+y = runif(500,3,10)
+z = runif(500,-5,5)
+O = (-1)*x+2*y+z+runif(100,1,2)
+data = list()
+data$x = x
+data$y = y
+data$z = z
+data$O = O
+m = lm(O~x+y+z, data)
+m1 = linear_regression(O~x+y+z, data)
 ```
 
-```{r setup}
-library(lmpackage)
-# my vignette test
+Because we mainly interested in some core outcomes of lm() such as coefficients, fitted_values. We examined them one by one via all.equal() function. We can see that, the fitted.values, coefficients, residuals, effects, rank, and df.residuals are all equal in the two models, suggesting a correct outcome for our simulation.  
+```{r}
+all.equal(m1$fitted.values, unname(m$fitted.values))
+all.equal(m1$coefficients, unname(m$coefficients))
+all.equal(m1$residuals, unname(m$residuals))
+all.equal(m1$effects, unname(m$effects))
+all.equal(m1$rank, unname(m$rank))
+all.equal(m1$df.residual, unname(m$df.residual))
+m0.1 = lm(O~-1+x+y+z, data)
+m1.1 = linear_regression(O~-1+x+y+z, data)
+all.equal(m1.1$fitted.values, unname(m0.1$fitted.values))
+all.equal(m1.1$coefficients, unname(m0.1$coefficients))
+all.equal(m1.1$residuals, unname(m0.1$residuals))
+all.equal(m1.1$effects, unname(m0.1$effects))
+all.equal(m1.1$rank, unname(m0.1$rank))
+all.equal(m1.1$df.residual, unname(m0.1$df.residual))
+```
+
+## 2.2 efficiency
+We use bench::mark to compare the time performance between the two methods. Here we can see our lmpackage shows a higher efficiency comparing to the lm() function.
+```{r}
+library(bench)
+library(ggbeeswarm)
+library(gmp)
+result = bench::mark(
+lm(O~x+y+z, data)$rank,
+linear_regression(O~x+y+z, data)$rank)
+print(result)
+plot(result)
 ```
