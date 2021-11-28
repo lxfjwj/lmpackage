@@ -15,8 +15,6 @@ linear_regression(
   x = FALSE,
   y = FALSE,
   qr = TRUE,
-  singular.ok = TRUE,
-  contrasts = NULL,
   offset,
   ...
 )
@@ -25,6 +23,10 @@ linear_regression(
 \item{data}{an optional data frame, list or environment containing the variables in the model. If not found in data, the variables are taken from environment(formula)}
 
 \item{subset}{optional vector specifying a subset of observations to be used in the fitting process.}
+
+\item{model}{along with x, y, and qr are logicals. If TRUE the corresponding components of the fit (the model frame, the model matrix, the response, the QR decomposition) are returned.}
+
+\item{offset}{this can be used to specify an a priori known component to be included in the linear predictor during fitting. This should be NULL or a numeric vector or matrix of extents matching those of the response.}
 
 \item{fomula}{an object of class "formula": a symbolic description of the model to be fitted.}
 }
@@ -48,6 +50,8 @@ y:if requested, the response used.
 x: if requested, the model matrix used.
 
 model: if requested (the default), the model frame used.
+
+offset: if not null, a n*1 matrix containing the offset values.
 }
 \description{
 main function to return result of lm()
@@ -56,5 +60,11 @@ main function to return result of lm()
 you can use this function to do linear regression and return a list of results.
 }
 \examples{
-x=1;linear_regression(x)
+#NOT RUN
+data = list()
+data$x = runif(100,1,5)
+data$y = runif(100,3,10)
+data$O = (-1)*x+2*y+runif(100,1,2)
+data$off = rep(1,length(y))
+model = linear_regression(O~x+y, data = data, offset = data$offset)
 }
