@@ -17,7 +17,7 @@
 #' @export
 #' @examples x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3)); m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
 
-model_fit <- function (mf, intercept, model, x, y, qr, offset){
+model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, offset){
   result = list()
   completedata = as.matrix(mf)
   n_col = dim(completedata)[2]
