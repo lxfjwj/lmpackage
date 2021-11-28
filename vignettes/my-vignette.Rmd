@@ -17,7 +17,7 @@ This package "lmpackage" is for simulating the output of lm() function. In the o
 ## 2.1 correctness
 To compare the correctness of our package with the lm() package. We randomly created a simulated data set consisting of 500*4 data. The last 3 columns are predictors (x, y, z), generated randomly. The first column is outcome O, to guarantee a linear relationship, here we generated y by linear combination of x, y, and z, and added a random error at the end. 
 ```{r}
-#library(lmpackage)
+library(lmpackage)
 x = runif(500,1,5)
 y = runif(500,3,10)
 z = runif(500,-5,5)
@@ -31,7 +31,7 @@ m = lm(O~x+y+z, data)
 m1 = linear_regression(O~x+y+z, data)
 ```
 
-Because we mainly interested in some core outcomes of lm() such as coefficients, fitted_values. We examined them one by one via all.equal() function. We can see that, the fitted.values, coefficients, residuals, effects, rank, and df.residuals are all equal in the two models, suggesting a correct outcome for our simulation.  
+Because we mainly interested in some core outcomes of lm() such as coefficients, fitted_values. Firstly, We examined the most basic function via all.equal() function. We can see that, the fitted.values, coefficients, residuals, effects, rank, and df.residuals are all equal in the two models, suggesting a correct outcome for our simulation. Secondly, we created m0.1 and m1.1 as models without intercept. The results also showed that they are equal. 
 ```{r}
 all.equal(m1$fitted.values, unname(m$fitted.values))
 all.equal(m1$coefficients, unname(m$coefficients))
@@ -39,8 +39,8 @@ all.equal(m1$residuals, unname(m$residuals))
 all.equal(m1$effects, unname(m$effects))
 all.equal(m1$rank, unname(m$rank))
 all.equal(m1$df.residual, unname(m$df.residual))
-m0.1 = lm(O~-1+x+y+z, data)
-m1.1 = linear_regression(O~-1+x+y+z, data)
+m0.1 = lm(O~-1+x+y+z, data, x=TRUE, y = TRUE)
+m1.1 = linear_regression(O~-1+x+y+z, data, x=TRUE, y = TRUE)
 all.equal(m1.1$fitted.values, unname(m0.1$fitted.values))
 all.equal(m1.1$coefficients, unname(m0.1$coefficients))
 all.equal(m1.1$residuals, unname(m0.1$residuals))
@@ -48,9 +48,22 @@ all.equal(m1.1$effects, unname(m0.1$effects))
 all.equal(m1.1$rank, unname(m0.1$rank))
 all.equal(m1.1$df.residual, unname(m0.1$df.residual))
 ```
+Thirdly, we consider adding offsets into our model. Without loss of generality, we create a vector of length 500 randomly, and compare the output of two functions. As the output shows, the regression results are also all equal.
+```{r}
+data$offset = runif(500,0,1)
+m0.2 = lm(O~-1+x+y+z, data, x=TRUE, y = TRUE, offset=offset)
+m1.2 = linear_regression(O~-1+x+y+z, data, x=TRUE, y = TRUE, offset=offset)
+all.equal(unname(m1.2$fitted.values), unname(m0.2$fitted.values))
+all.equal(m1.2$coefficients, unname(m0.2$coefficients))
+all.equal(m1.2$residuals, unname(m0.2$residuals))
+all.equal(m1.2$effects, unname(m0.2$effects))
+all.equal(m1.2$rank, unname(m0.2$rank))
+all.equal(m1.2$df.residual, unname(m0.2$df.residual))
+```
+
 
 ## 2.2 efficiency
-We use bench::mark to compare the time performance between the two methods. Here we can see our lmpackage shows a higher efficiency comparing to the lm() function.
+We use bench::mark to compare the time performance between the two methods. From the figure, we can see our lmpackage shows a higher efficiency comparing to the lm() function. From the output, we can also see the median time for the two are 1.47ms and 3.35ms seperaely. This may because lm() function take more functions into consideration than linear_regression here.  
 ```{r}
 library(bench)
 library(ggbeeswarm)
