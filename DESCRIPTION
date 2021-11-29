@@ -11,6 +11,11 @@ LazyData: true
 Suggests: 
     knitr,
     rmarkdown,
+    bench,
+    ggbeeswarm,
+    gmp,
+    qpdf,
+    tidyr,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
