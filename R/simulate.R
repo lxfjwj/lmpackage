@@ -6,7 +6,7 @@
 #'
 #' @param datasize1 a integer represents the amounts of every variables .
 #' @param datasize2 a integer represents the numbers of variables.
-#' @param error_range an optional vector: the range of expected error. By default it is c(0,1).
+#' @param error_range the range of errors of outcomes. This should be NULL or a numeric vector of size datasize1
 #' @param data_range a datasize2*2 matrix: every row represents the range of every variable.
 #' @param offsets_range the range of expected offsets. This should be NULL or a numeric vector of size datasize1.
 #' @param weights_range the range of expected weights. This should be NULL or a numeric vector of size datasize1.
@@ -21,11 +21,11 @@
 #' @examples offsets_range = c(0,1)
 #' @examples weights_range = c(0,1)
 #' @examples coefficients = c(1,2,3)
-#' @examples data = simulate(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
+#' @examples data = simulate(10, 3, error_range= c(0,1), data_range, offsets_range, weights_range,coefficients)
 
 
 simulate = function(datasize1, datasize2,
-                    error_range = c(0,1), data_range, offsets_range, weights_range,
+                    error_range, data_range, offsets_range, weights_range,
                     coefficients){
   data_matrix = matrix(0,nrow = datasize1, ncol = datasize2+1)
   for (i in 1:datasize2){
@@ -37,23 +37,29 @@ simulate = function(datasize1, datasize2,
   for (i in 1:datasize2){
     data_matrix[,1] = data_matrix[,1]+coefficients[i]*data_matrix[,i+1]
   }
-  error_min = error_range[1]
-  error_max = error_range[2]
-  error = runif(datasize1,error_min,error_max)
-  data_matrix[,1] = data_matrix[,1] + error
+  if (!missing(error_range)){
+    error_min = error_range[1]
+    error_max = error_range[2]
+    error = runif(datasize1,error_min,error_max)
+    data_matrix[,1] = data_matrix[,1] + error
+  }
   # generate outcome
   data_frame = as.data.frame(data_matrix)
   if (! missing(offsets_range)){
-    offsets_min = offsets_range[1]
-    offsets_max = offsets_range[2]
-    offsets = runif(datasize1,offsets_min,offsets_max)
-    data_frame$`(offset)` = offsets
+    if (!is.matrix(offsets_range)){
+      offsets_min = offsets_range[1]
+      offsets_max = offsets_range[2]
+      offsets = runif(datasize1,offsets_min,offsets_max)
+      data_frame$`(offset)` = offsets
+    }
   }
   if (! missing(weights_range)){
-    weights_min = weights_range[1]
-    weights_max = weights_range[2]
-    weights = runif(datasize1,weights_min,weights_max)
-    data_frame$`(weights)` = weights
+    if (!is.matrix(weights_range)){
+      weights_min = weights_range[1]
+      weights_max = weights_range[2]
+      weights = runif(datasize1,weights_min,weights_max)
+      data_frame$`(weights)` = weights
+    }
   }
   # if weights/offsets is not NULL, generate them
   return (data_frame)

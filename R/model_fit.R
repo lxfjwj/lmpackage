@@ -33,17 +33,22 @@ model_fit <- function (mf, intercept,
   }
   if (!missing(weights)){
     # if there are weights, extract weights from data
-    mf = subset(mf, select = -c(`(weights)`))
-    result$weights = weights
+    if (!is.matrix(weights)){
+      mf = subset(mf, select = -c(`(weights)`))
+      result$weights = weights
+    }
   }
   completedata = as.matrix(mf)
   n_col = dim(completedata)[2]
+  n_row = dim(completedata)[1]
   X_range = n_col
   if (! missing(offset)){
     # if there are offsets, the last column of input would be offsets
-    offdata = completedata[,n_col]
-    Y = completedata[,1]-offdata
-    X_range = X_range-1
+    if (!is.matrix(offset)){
+      offdata = completedata[,n_col]
+      Y = completedata[,1]-offdata
+      X_range = X_range-1
+    }
   }
   else{
     Y = completedata[,1]
@@ -57,16 +62,21 @@ model_fit <- function (mf, intercept,
   }
   # create datavec for outcome(Y) and data matrix (X).
   if (!missing(weights)){
-    X_origin =  X
-    Y_origin = Y
-    X = sqrt(weights)*X
-    Y = sqrt(weights)*Y
-    # if there are weights, the design matrix and outcome matrix to calculate the coeffieients should  times by sqrt(weight)
+    if (!is.matrix(weights)){
+      X_origin =  X
+      Y_origin = Y
+      rw = sqrt(weights)
+      X = rw*X
+      Y = rw*Y
+      # if there are weights, the design matrix and outcome matrix to calculate the coeffieients should  times by sqrt(weight)
+
+    }
   }
-  A = t(X)%*%X
+  TX = t(X)
+  A = TX%*%X
   A_inv = solve(A)
-  beta_hat = A_inv%*%(t(X))%*%Y
-  H = X%*%A_inv%*%(t(X))
+  beta_hat = A_inv%*%(TX)%*%Y
+  H = X%*%A_inv%*%(TX)
   # calculate the H matrix for linear regression.
   y_hat = H%*%Y
   result$fitted.values= as.numeric(unlist(y_hat))
@@ -87,13 +97,18 @@ model_fit <- function (mf, intercept,
     result$qr = qrx
   }
   if (!missing(weights)){
-    # if there are weights, extract weights from data
-    result$fitted.values = as.numeric(unlist(X_origin%*%beta_hat))
+    if (!is.matrix(weights)){
+      # if there are weights, extract weights from data
+      real_fitted.value = X_origin%*%beta_hat
+      result$fitted.values = as.numeric(unlist(real_fitted.value))
+    }
   }
   if (! missing(offset)){
-    # if there are offsets, fitted values should add offsets
-    result$fitted.values = result$fitted.values+offdata
-    result$offset = as.numeric(unlist(offdata))
+    if (!is.matrix(offset)){
+      # if there are offsets, fitted values should add offsets
+      result$fitted.values = result$fitted.values+offdata
+      result$offset = as.numeric(unlist(offdata))
+    }
   }
   result$residuals = as.numeric(unlist(completedata[,1]))-result$fitted.values
   assign_range1 = abs(intercept-1)

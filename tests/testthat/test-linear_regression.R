@@ -8,6 +8,7 @@ data = simulate(datasize1, datasize2,
                 error_range = c(0,1), data_range, offsets_range, weights_range,
                 coefficients)
 testresult = lm(V1~V2+V3+V4, data = data, weights = data$`(weights)`, offset = data$`(offset)`)
+testresult1 = lm(V1~V2+V3+V4-1, data = data, weights = data$`(weights)`)
 test_that("", {
   expect_equal(linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE, offset = data$`(offset)`)$fitted.values, testresult$fitted.values)
   expect_equal(linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE, offset = data$`(offset)`)$coefficients, unname(testresult$coefficients))
@@ -15,4 +16,5 @@ test_that("", {
   expect_equal(linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE, offset = data$`(offset)`)$residuals, testresult$residuals)
   expect_equal(linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE, offset = data$`(offset)`)$effects, unname(testresult$effects))
   expect_equal(linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE, offset = data$`(offset)`)$df.residual, testresult$df.residual)
+  expect_equal(linear_regression(V1~V2+V3+V4-1, data = data, weights = data$`(weights)`, model = TRUE, x = TRUE, y = TRUE, qr=TRUE)$df.residual, testresult1$df.residual)
 })
