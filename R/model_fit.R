@@ -40,13 +40,11 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
     offdata = completedata[,n_col]
     Y = completedata[,1]-offdata
     X_range = X_range-1
-  }
-  else{Y = completedata[,1]}
+  } else{Y = completedata[,1]}
   if (intercept == 1){
     add_col = matrix(1,dim(completedata)[1],1)
     X = cbind(add_col, completedata[,2:X_range])
-  }
-  else{X = completedata[,2:X_range]}
+  } else{X = completedata[,2:X_range]}
   # create datavec for outcome(Y) and data matrix (X).
   if (!missing(weights)){
     X_origin =  X
