@@ -8,6 +8,7 @@ linear_regression(
   formula,
   data,
   subset,
+  weights,
   model = TRUE,
   x = FALSE,
   y = FALSE,
@@ -21,6 +22,8 @@ linear_regression(
 \item{data}{an optional data frame, list or environment containing the variables in the model. If not found in data, the variables are taken from environment(formula)}
 
 \item{subset}{optional vector specifying a subset of observations to be used in the fitting process.}
+
+\item{weights}{this can be used to specify an a priori known component weights of predictors to be included in the fitting. This should be NULL or a numeric vector or matrix of extents matching those of the response.}
 
 \item{model}{logical. If TRUE the the model frame is returned.}
 
@@ -55,6 +58,8 @@ model: if requested (the default), the model frame used.
 
 offset: if not null, a n*1 matrix containing the offset values.
 
+weights: if not null, a n*1 matrix containing the weights values.
+
 terms: the formula of fitted model.
 }
 \description{
@@ -65,10 +70,10 @@ you can use this function to do linear regression and return a list of results.
 }
 \examples{
 #NOT RUN
-data = list()
-data$x = runif(100,1,5)
-data$y = runif(100,3,10)
-data$O = (-1)*data$x+2*data$y+runif(100,1,2)
-data$off = rep(1,length(data$y))
-model = linear_regression(O~x+y, data = data, offset = data$offset)
+data_range = matrix(c(0,0,0,1,1,1),3,2)
+offsets_range = c(0,1)
+weights_range = c(0,1)
+coefficients = c(1,2,3)
+data = simulate(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
+model = linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`,offset = data$`(offsets)`)
 }

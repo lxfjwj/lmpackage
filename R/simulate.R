@@ -9,7 +9,8 @@
 #' @param error_range an optional vector: the range of expected error. By default it is c(0,1).
 #' @param data_range a datasize2*2 matrix: every row represents the range of every variable.
 #' @param offsets_range the range of expected offsets. This should be NULL or a numeric vector of size datasize1.
-#' @param weights_range the range of expected weights. This should be NULL or a numeric vector of size datasize1..
+#' @param weights_range the range of expected weights. This should be NULL or a numeric vector of size datasize1.
+#' @param coefficients a numeric vector with length datasize1: the simulated coefficient for every variable.
 #' @return 'simulate' returns a dataframe of results containing the following components:
 #' @return V1: the simulated Outcome. It should be a numeric vector with length of datasize1
 #' @return V2, V3,...: the simulated Predictors. It should be a numeric vector with length of datasize1

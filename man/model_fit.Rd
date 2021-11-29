@@ -4,10 +4,19 @@
 \alias{model_fit}
 \title{model_fit}
 \usage{
-model_fit(mf, intercept, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, offset)
+model_fit(
+  mf,
+  intercept,
+  model = TRUE,
+  x = FALSE,
+  y = FALSE,
+  qr = TRUE,
+  offset,
+  weights
+)
 }
 \arguments{
-\item{mf}{a dataframe of complete data}
+\item{mf}{a named dataframe of complete data}
 
 \item{intercept}{an interger equals to 0 or 1. If 0, intercept should not be included in the model}
 
@@ -19,7 +28,9 @@ model_fit(mf, intercept, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, offset)
 
 \item{qr}{logical. If TRUE the the QR is returned.}
 
-\item{offset}{'offset' is a vector with the same length of data. If null, the data frame "mf" does not contain an offset column, else, the last column is offset vector}
+\item{offset}{'offset' is a vector with the same length of data. If null, the data frame "mf" does not contain an offset column, else, the offset column is offset vector}
+
+\item{weights}{'weights' is a vector with the same length of data. If null, the data frame "mf" does not contain an weights column, else, the weights column is offset vector}
 }
 \value{
 'model_fit' returns a list of results containing the following components:
@@ -33,6 +44,8 @@ coefficients: a n*1 matrix containing the residuals (observed values - fitted va
 residuals: a n*1 matrix containing the residuals (observed values - fitted values)
 
 offset: if not null, a n*1 matrix containing the offset values.
+
+weights: if not null, a n*1 matrix containing the weights values.
 }
 \description{
 function to fit a linear model
@@ -41,6 +54,7 @@ function to fit a linear model
 you can use this function to fit for a linear model return a list of results.
 }
 \examples{
-x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3))
-m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
+x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1,1,2,3,4),4,4))
+names(x) <- c("O", "x", "(offsets)","(weights)")
+m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1), weights = c(1:4))
 }
