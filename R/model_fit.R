@@ -27,6 +27,7 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
   n_col = dim(completedata)[2]
   X_range = n_col
   if (! missing(offset)){
+    # if there are offsets, the last column of input would be offsets
     offdata = completedata[,n_col]
     Y = completedata[,1]-offdata
     X_range = X_range-1
@@ -41,6 +42,7 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
   else{
     X = completedata[,2:X_range]
   }
+  # create datavec for outcome(Y) and data matrix (X)
   A = t(X)%*%X
   A_inv = solve(A)
   beta_hat = A_inv%*%(t(X))%*%Y
@@ -66,6 +68,7 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
     result$qr = qrx
   }
   if (! missing(offset)){
+    # if there are offsets, fitted values should add offsets
     result$fitted.values = result$fitted.values+offdata
     result$offset = as.numeric(unlist(offdata))
   }
