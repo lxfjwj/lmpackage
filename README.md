@@ -29,7 +29,6 @@ coefficients = c(1,2,3)
 data = simulate(datasize1, datasize2, 
                 error_range = c(1,2), data_range, offsets_range, weights_range,
                 coefficients)
-print(data)
 # V1         V2          V3        V4   (offset)  (weights)
 # 1  3.433210 0.67290520 0.085142442 0.3721877 0.02740092 0.87368450
 # 2  2.332600 0.19175256 0.071466435 0.2849875 0.49231630 0.38044609
