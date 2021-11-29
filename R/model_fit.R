@@ -24,9 +24,13 @@
 #' @examples names(x) <- c("O", "x", "(offsets)","(weights)")
 #' @examples m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1), weights = c(1:4))
 
-model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, offset, weights){
+model_fit <- function (mf, intercept,
+                       model = TRUE, x=FALSE, y=FALSE, qr=TRUE,
+                       offset, weights){
   result = list()
-  if (model == TRUE){result$model = mf}
+  if (model == TRUE){
+    result$model = mf
+  }
   if (!missing(weights)){
     # if there are weights, extract weights from data
     mf = subset(mf, select = -c(`(weights)`))
@@ -40,11 +44,17 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
     offdata = completedata[,n_col]
     Y = completedata[,1]-offdata
     X_range = X_range-1
-  } else{Y = completedata[,1]}
+  }
+  else{
+    Y = completedata[,1]
+  }
   if (intercept == 1){
     add_col = matrix(1,dim(completedata)[1],1)
     X = cbind(add_col, completedata[,2:X_range])
-  } else{X = completedata[,2:X_range]}
+  }
+  else{
+    X = completedata[,2:X_range]
+  }
   # create datavec for outcome(Y) and data matrix (X).
   if (!missing(weights)){
     X_origin =  X
@@ -67,8 +77,12 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
   result$effects = as.numeric(unlist(effects))
   result$rank = qr(X)$rank
   result$df.residual = dim(completedata)[1]-result$rank
-  if (x == TRUE){result$x = X}
-  if (y == TRUE){result$y = Y}
+  if (x == TRUE){
+    result$x = X
+  }
+  if (y == TRUE){
+    result$y = Y
+  }
   if (qr == TRUE){
     result$qr = qrx
   }
@@ -82,6 +96,8 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
     result$offset = as.numeric(unlist(offdata))
   }
   result$residuals = as.numeric(unlist(completedata[,1]))-result$fitted.values
-  result$assign = (abs(intercept-1):(result$rank-intercept))
+  assign_range1 = abs(intercept-1)
+  assign_range2 = result$rank-intercept
+  result$assign = (assign_range1:assign_range2)
   return (result)
 }
