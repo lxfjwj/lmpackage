@@ -42,12 +42,12 @@ model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, o
   else{
     X = completedata[,2:X_range]
   }
-  # create datavec for outcome(Y) and data matrix (X)
+  # create datavec for outcome(Y) and data matrix (X).
   A = t(X)%*%X
   A_inv = solve(A)
   beta_hat = A_inv%*%(t(X))%*%Y
   H = X%*%A_inv%*%(t(X))
-  # calculate the H matrix for linear regression
+  # calculate the H matrix for linear regression.
   y_hat = H%*%Y
   result$fitted.values= as.numeric(unlist(y_hat))
   result$coefficients = as.numeric(unlist(beta_hat))
