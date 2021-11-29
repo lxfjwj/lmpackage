@@ -7,6 +7,7 @@
 #' @param formula an object of class "formula": a symbolic description of the model to be fitted.
 #' @param data an optional data frame, list or environment containing the variables in the model. If not found in data, the variables are taken from environment(formula)
 #' @param subset optional vector specifying a subset of observations to be used in the fitting process.
+#' @param weights this can be used to specify an a priori known component weights of predictors to be included in the fitting. This should be NULL or a numeric vector or matrix of extents matching those of the response.
 #' @param model logical. If TRUE the the model frame is returned.
 #' @param x logical. If TRUE the the model matrix is returned.
 #' @param y logical. If TRUE the response is returned.
@@ -23,19 +24,20 @@
 #' @return x: if requested, the model matrix used.
 #' @return model: if requested (the default), the model frame used.
 #' @return offset: if not null, a n*1 matrix containing the offset values.
+#' @return weights: if not null, a n*1 matrix containing the weights values.
 #' @return terms: the formula of fitted model.
 #' @export
 #' @examples #NOT RUN
-#' @examples data = list()
-#' @examples data$x = runif(100,1,5)
-#' @examples data$y = runif(100,3,10)
-#' @examples data$O = (-1)*data$x+2*data$y+runif(100,1,2)
-#' @examples data$off = rep(1,length(data$y))
-#' @examples model = linear_regression(O~x+y, data = data, offset = data$offset)
+#' @examples data_range = matrix(c(0,0,0,1,1,1),3,2)
+#' @examples offsets_range = c(0,1)
+#' @examples weights_range = c(0,1)
+#' @examples coefficients = c(1,2,3)
+#' @examples data = simulate(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
+#' @examples model = linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`,offset = data$`(offsets)`)
 
 
 
-linear_regression <- function (formula, data, subset,
+linear_regression <- function (formula, data, subset, weights,
                              model = TRUE, x = FALSE, y = FALSE, qr = TRUE,
                              offset)  {
   ret.x <- x
@@ -51,7 +53,7 @@ linear_regression <- function (formula, data, subset,
   # get fulldata matrix: mf
   term = attr(mf,"terms")
   intercept = attr(term,"intercept")
-  result = model_fit(mf, intercept, model, x, y, qr, offset)
+  result = model_fit(mf, intercept, model, x, y, qr, offset, weights)
   result$terms = formula
   return (result)
 }
