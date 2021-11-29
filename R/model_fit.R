@@ -6,7 +6,10 @@
 #'
 #' @param mf a dataframe of complete data
 #' @param intercept an interger equals to 0 or 1. If 0, intercept should not be included in the model
-#' @param model along with x, y, and qr are logicals. If TRUE the corresponding components of the fit (the model frame, the model matrix, the response, the QR decomposition) are returned.
+#' @param model logical. If TRUE the the model frame is returned.
+#' @param x logical. If TRUE the the model matrix is returned.
+#' @param y logical. If TRUE the response is returned.
+#' @param qr logical. If TRUE the the QR is returned.
 #' @param offset 'offset' is a vector with the same length of data. If null, the data frame "mf" does not contain an offset column, else, the last column is offset vector
 #' @return 'model_fit' returns a list of results containing the following components:
 #' @return fitted.values: a n*1 matrix containing the fitted value
@@ -15,7 +18,8 @@
 #' @return residuals: a n*1 matrix containing the residuals (observed values - fitted values)
 #' @return offset: if not null, a n*1 matrix containing the offset values.
 #' @export
-#' @examples x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3)); m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
+#' @examples x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3))
+#' @examples m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
 
 model_fit <- function (mf, intercept, model = TRUE, x=FALSE, y=FALSE, qr=TRUE, offset){
   result = list()

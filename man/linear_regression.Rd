@@ -8,27 +8,29 @@ linear_regression(
   formula,
   data,
   subset,
-  weights,
-  na.action,
-  method = "qr",
   model = TRUE,
   x = FALSE,
   y = FALSE,
   qr = TRUE,
-  offset,
-  ...
+  offset
 )
 }
 \arguments{
+\item{formula}{an object of class "formula": a symbolic description of the model to be fitted.}
+
 \item{data}{an optional data frame, list or environment containing the variables in the model. If not found in data, the variables are taken from environment(formula)}
 
 \item{subset}{optional vector specifying a subset of observations to be used in the fitting process.}
 
-\item{model}{along with x, y, and qr are logicals. If TRUE the corresponding components of the fit (the model frame, the model matrix, the response, the QR decomposition) are returned.}
+\item{model}{logical. If TRUE the the model frame is returned.}
+
+\item{x}{logical. If TRUE the the model matrix is returned.}
+
+\item{y}{logical. If TRUE the response is returned.}
+
+\item{qr}{logical. If TRUE the the QR is returned.}
 
 \item{offset}{this can be used to specify an a priori known component to be included in the linear predictor during fitting. This should be NULL or a numeric vector or matrix of extents matching those of the response.}
-
-\item{fomula}{an object of class "formula": a symbolic description of the model to be fitted.}
 }
 \value{
 'linear_regression' returns a list of results containing at least the following components:
@@ -45,13 +47,15 @@ df.residual: the residual degrees of freedom.
 
 call: the matched call.
 
-y:if requested, the response used.
+y: if requested, the response used.
 
 x: if requested, the model matrix used.
 
 model: if requested (the default), the model frame used.
 
 offset: if not null, a n*1 matrix containing the offset values.
+
+terms: the formula of fitted model.
 }
 \description{
 main function to return result of lm()
@@ -64,7 +68,7 @@ you can use this function to do linear regression and return a list of results.
 data = list()
 data$x = runif(100,1,5)
 data$y = runif(100,3,10)
-data$O = (-1)*x+2*y+runif(100,1,2)
-data$off = rep(1,length(y))
+data$O = (-1)*data$x+2*data$y+runif(100,1,2)
+data$off = rep(1,length(data$y))
 model = linear_regression(O~x+y, data = data, offset = data$offset)
 }

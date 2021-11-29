@@ -4,14 +4,20 @@
 \alias{model_fit}
 \title{model_fit}
 \usage{
-model_fit(mf, intercept, model, x, y, qr, offset)
+model_fit(mf, intercept, model = TRUE, x = FALSE, y = FALSE, qr = TRUE, offset)
 }
 \arguments{
 \item{mf}{a dataframe of complete data}
 
 \item{intercept}{an interger equals to 0 or 1. If 0, intercept should not be included in the model}
 
-\item{model}{along with x, y, and qr are logicals. If TRUE the corresponding components of the fit (the model frame, the model matrix, the response, the QR decomposition) are returned.}
+\item{model}{logical. If TRUE the the model frame is returned.}
+
+\item{x}{logical. If TRUE the the model matrix is returned.}
+
+\item{y}{logical. If TRUE the response is returned.}
+
+\item{qr}{logical. If TRUE the the QR is returned.}
 
 \item{offset}{'offset' is a vector with the same length of data. If null, the data frame "mf" does not contain an offset column, else, the last column is offset vector}
 }
@@ -35,5 +41,6 @@ function to fit a linear model
 you can use this function to fit for a linear model return a list of results.
 }
 \examples{
-x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3)); m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
+x = as.data.frame(matrix(c(2,4,6,8,1.1,1.9,3.1,4.2,1,1,1,1),4,3))
+m = model_fit(x,1,TRUE, TRUE, TRUE, TRUE, offset = c(1,1,1,1))
 }

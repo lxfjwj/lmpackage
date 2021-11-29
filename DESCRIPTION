@@ -1,9 +1,9 @@
 Package: lmpackage
 Type: Package
 Title: lmpackage
-Version: 0.1.0
+Version: 1.0.0
 Author: Weijia Jin
-Maintainer: wjjin@umich.edu
+Maintainer: Weijia Jin<wjjin@umich.edu>
 Description: This package simulates the function of lm funtion. 
 License: GPL-3
 Encoding: UTF-8
