@@ -1,3 +1,3 @@
 <!-- badges: start -->
-[![R-CMD-check](https://github.com/lxfjwj/lmpackage/workflows/R-CMD-check/badge.svg)](https://github.com/lxfjwj/lmpackage/actions)
+[![Travis build status](https://travis-ci.com/lxfjwj/lmpackage.svg?branch=main)](https://travis-ci.com/lxfjwj/lmpackage)
 <!-- badges: end -->
