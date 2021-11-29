@@ -7,7 +7,7 @@
 simulate(
   datasize1,
   datasize2,
-  error_range = c(0, 1),
+  error_range,
   data_range,
   offsets_range,
   weights_range,
@@ -19,7 +19,7 @@ simulate(
 
 \item{datasize2}{a integer represents the numbers of variables.}
 
-\item{error_range}{an optional vector: the range of expected error. By default it is c(0,1).}
+\item{error_range}{the range of errors of outcomes. This should be NULL or a numeric vector of size datasize1}
 
 \item{data_range}{a datasize2*2 matrix: every row represents the range of every variable.}
 
@@ -51,5 +51,5 @@ data_range = matrix(c(0,0,0,1,1,1),3,2)
 offsets_range = c(0,1)
 weights_range = c(0,1)
 coefficients = c(1,2,3)
-data = simulate(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
+data = simulate(10, 3, error_range= c(0,1), data_range, offsets_range, weights_range,coefficients)
 }
