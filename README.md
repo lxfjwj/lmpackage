@@ -13,7 +13,7 @@ lmpackage is a R package to simulate the functions of lm().
 
 ```model_fit()``` an assistant function for model fitting of a given data set.
 
-```simulate()``` an assistant function for testing data simulation.
+```simulate_data()``` an assistant function for testing data simulation.
 
 You can learn more about how to use them in the following "Usage" part or in the "my-vignette.Rmd" file, which also includes the comparasion with lm() function.
 
@@ -26,7 +26,7 @@ data_range = matrix(c(0,0,0,1,1,1),3,2)
 offsets_range = c(0,1)
 weights_range = c(0,1)
 coefficients = c(1,2,3)
-data = simulate(datasize1, datasize2, 
+data = simulate_data(datasize1, datasize2, 
                 error_range = c(1,2), data_range, offsets_range, weights_range,
                 coefficients)
 # V1         V2          V3        V4   (offset)  (weights)

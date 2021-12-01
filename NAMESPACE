@@ -2,4 +2,4 @@
 
 export(linear_regression)
 export(model_fit)
-export(simulate)
+export(simulate_data)

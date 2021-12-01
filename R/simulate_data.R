@@ -1,4 +1,4 @@
-#' @title simulate
+#' @title simulate_data
 #'
 #' @description function to generate simulation data for test
 #'
@@ -21,10 +21,10 @@
 #' @examples offsets_range = c(0,1)
 #' @examples weights_range = c(0,1)
 #' @examples coefficients = c(1,2,3)
-#' @examples data = simulate(10, 3, error_range= c(0,1), data_range, offsets_range, weights_range,coefficients)
+#' @examples data = simulate_data(10, 3, error_range= c(0,1), data_range, offsets_range, weights_range,coefficients)
 
 
-simulate = function(datasize1, datasize2,
+simulate_data = function(datasize1, datasize2,
                     error_range, data_range, offsets_range, weights_range,
                     coefficients){
   data_matrix = matrix(0,nrow = datasize1, ncol = datasize2+1)

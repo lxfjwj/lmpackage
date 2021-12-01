@@ -74,6 +74,6 @@ data_range = matrix(c(0,0,0,1,1,1),3,2)
 offsets_range = c(0,1)
 weights_range = c(0,1)
 coefficients = c(1,2,3)
-data = simulate(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
+data = simulate_data(10, 3, error_range = c(0,1), data_range, offsets_range, weights_range,coefficients)
 model = linear_regression(V1~V2+V3+V4, data = data, weights = data$`(weights)`,offset = data$`(offsets)`)
 }
