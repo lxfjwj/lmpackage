@@ -66,10 +66,11 @@ all.equal(m1.2$df.residual, unname(m0.2$df.residual))
 
 ## 2.2 efficiency
 We use bench::mark to compare the time performance between the two methods. From the figure, we can see our lmpackage shows a higher efficiency comparing to the lm() function. From the output, we can also see the median time for the two are about 1ms and 3ms seperaely. This may because lm() function take more functions into consideration than linear_regression here.  
-```{r}
+```{r fig.height=5, fig.width=7}
+formula = "V1~V2+V3+V4"
 result = bench::mark(
-lm(V1~V2+V3+V4, data = data)$rank,
-linear_regression(V1~V2+V3+V4, data = data)$rank)
+lm(formula, data)$rank,
+linear_regression(formula, data)$rank)
 print(result)
 plot(result)
 ```
