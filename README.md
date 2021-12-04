@@ -6,6 +6,13 @@
   [![Codecov test coverage](https://codecov.io/gh/lxfjwj/lmpackage/branch/main/graph/badge.svg)](https://app.codecov.io/gh/lxfjwj/lmpackage?branch=main)
 <!-- badges: end -->
 
+
+## Intall
+To install this package:
+```{r}
+devtools::install_github('lxfjwj/lmpackage', build_vignettes = TRUE)
+```
+
 ## Overview
 lmpackage is a R package to simulate the functions of lm().
 
